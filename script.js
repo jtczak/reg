@@ -73,6 +73,7 @@ sendBtn.addEventListener('click', e => {
 clearBtn.addEventListener('click', e => {
     e.preventDefault();
     [username, pass, pass2, email].forEach(el => {
-        el.value = ''
+        el.value = '';
+        clearError(el);
     })
 });
