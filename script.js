@@ -28,7 +28,7 @@ const checkForm = input => {
         if (el.value === '') {
             showError(el, el.placeholder);
         } else {
-
+            clearError(el)
         }
     })
 };
@@ -37,27 +37,46 @@ const checkForm = input => {
 // EL is every variable from array
 
 
-const checkLength = (input, min)=>{
-    if (input.value.length < min){
+const checkLength = (input, min) => {
+    if (input.value.length < min) {
         showError(input, `${input.previousElementSibling.innerText.slice(0, -1)} must have minimum ${min} characters.`)
     }
 }
 
-const checkPass = (pass1, pass2)=>{
-    if (pass1.value !== pass2.value){
-        showError (pass2, 'Passwords are not matching.')
+const checkPass = (pass1, pass2) => {
+    if (pass1.value !== pass2.value) {
+        showError(pass2, 'Passwords are not matching.')
     }
 }
 
-const checkMail = email =>{
+const checkMail = email => {
 
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    
-        if(re.test(email.value)){
-            clearError(email)
-        }else{
-            showError(email, "Please enter a valid email address")
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(email.value)) {
+        clearError(email)
+    } else {
+        showError(email, "Please enter a valid email address")
+    }
+}
+
+const checkErrors = () => {
+
+    const allInputs = document.querySelectorAll('.form-box');
+    let errorCount = 0;
+
+    allInputs.forEach(el => {
+        if (el.classList.contains('error')) {
+            errorCount++;
         }
+    })
+
+    if (errorCount === 0) {
+        popup.classList.add('show-popup')
+    }
+
+    console.log(errorCount);
+
 }
 
 sendBtn.addEventListener('click', e => {
@@ -68,6 +87,7 @@ sendBtn.addEventListener('click', e => {
     checkLength(pass, 8);
     checkPass(pass, pass2);
     checkMail(email);
+    checkErrors();
 })
 
 clearBtn.addEventListener('click', e => {
